@@ -1,13 +1,13 @@
 # Screenshots para o relatorio
 
-Mapeamento de prints de validação do sistema:
+Mapeamento dos prints de validacao no Killercoda. Consulte tambem o [README principal](../../README.md).
 
-| Arquivo | Conteudo |
-|---------|----------|
-| `01-initial-configs` | Clone do projeto, instalação do k3s via script e teste inicial de deploy (que falhou). Git pull novamente após correções no arquivo para funcionar no killercoda |
-| `02-starting-deploy` | Deploy iniciado via script |
-| `03-successfull-deploy-and-monitoring` | Deploy finalizado e visualização dos pods OK |
-| `04-wordpress-login` | Tela de login do wordpress, após configurar adequadamente um usuario na tela inicial |
-| `05-add-persistence-check-post` | Tela de posts do wordpress, no qual adicionei um post de teste de persistencia |
-| `06-delete-pods-to-check-persistence` | Verificação e deleção dos pods do wordpress e mysql, com verificação pós restart |
-| `07-persisted-successfully` | Validação da persistencia pós deleção do pod via wordpress - Post de "Persistence check" continua lá |
+| Arquivo | Passo | Conteudo |
+|---------|-------|----------|
+| `01-initial-configs.png` | 1–2 | Clone do projeto, instalacao do k3s via script e verificacao inicial do cluster |
+| `02-starting-deploy.png` | 4 | Deploy iniciado via `./scripts/deploy.sh` |
+| `03-successfull-deploy-and-monitor.png` | 4 | Deploy finalizado; pods, services e PVCs em estado OK |
+| `04-wordpress-login.png` | 5 | Tela de login do WordPress apos configurar usuario na instalacao inicial |
+| `05-add-persistence-check-post.png` | 5 | Post de teste publicado no WordPress antes do teste de resiliencia |
+| `06-delete-pods-to-check-persistence.png` | 6 | Delecao dos pods WordPress e MySQL; aguardando recriacao |
+| `07-persisted-successfully.png` | 6 | Validacao no navegador: post de persistencia continua disponivel apos restart |

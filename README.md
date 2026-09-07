@@ -36,7 +36,7 @@ Ambos os pods usam o StorageClass `local-path` (incluso no k3s). Ao deletar um p
 ```
 microcontainer-arch-plus/
 ├── README.md
-├── docs/images/              # Screenshots do relatorio
+├── docs/images/              # Screenshots do relatorio (ver docs/images/README.md)
 ├── k8s/
 │   ├── base/                 # Manifests base
 │   └── overlays/local/       # Overlay Kustomize
@@ -45,6 +45,8 @@ microcontainer-arch-plus/
     ├── deploy.sh
     └── test-resilience.sh
 ```
+
+Os screenshots de cada passo estao documentados em [`docs/images/README.md`](docs/images/README.md).
 
 ---
 
@@ -61,8 +63,6 @@ git clone https://github.com/nathanfmachado/microcontainer-arch-plus.git
 cd microcontainer-arch-plus
 chmod +x scripts/*.sh
 ```
-
-![k3s nodes](docs/images/01-k3s-nodes.png)
 
 ---
 
@@ -82,7 +82,7 @@ kubectl get storageclass
 
 Resultado esperado: no com status `Ready` e StorageClass `local-path` disponivel.
 
-![storage class](docs/images/02-storageclass.png)
+![configuracao inicial](docs/images/01-initial-configs.png)
 
 ---
 
@@ -118,7 +118,9 @@ Resultado esperado:
 | `pvc/mysql-pvc` | `Bound` |
 | `pvc/wordpress-pvc` | `Bound` |
 
-![pods running](docs/images/03-pods-running.png)
+![deploy iniciado](docs/images/02-starting-deploy.png)
+
+![deploy e monitoramento](docs/images/03-successfull-deploy-and-monitor.png)
 
 ---
 
@@ -132,7 +134,7 @@ No Killercoda o acesso ao site e feito pelo proxy de portas da plataforma, nao p
 
 > Dica: no terminal, `sed 's/PORT/30080/g' /etc/killercoda/host` gera a mesma URL. Para testes com `curl` dentro da VM, use `http://localhost:30080`.
 
-![wordpress install](docs/images/04-wordpress-install.png)
+![login wordpress](docs/images/04-wordpress-login.png)
 
 ### Configuracao pelo time de Marketing
 
@@ -142,7 +144,7 @@ No Killercoda o acesso ao site e feito pelo proxy de portas da plataforma, nao p
 4. Instale um tema e publique uma pagina de teste (ex.: "Bem-vindo ao site da empresa")
 5. Acesse `wp-admin` e confirme que o conteudo foi salvo
 
-![wp-admin](docs/images/05-wp-admin.png)
+![post de teste](docs/images/05-add-persistence-check-post.png)
 
 ---
 
@@ -176,7 +178,9 @@ export TEST_URL=http://localhost:30080
 
 Valide no navegador: abra novamente **Traffic / Ports → 30080 → Access** e confirme que o site, o login no `wp-admin` e o conteudo publicado continuam disponiveis.
 
-![resilience test](docs/images/06-resilience-test.png)
+![delecao dos pods](docs/images/06-delete-pods-to-check-persistence.png)
+
+![persistencia validada](docs/images/07-persisted-successfully.png)
 
 ---
 
