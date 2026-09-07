@@ -3,7 +3,6 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-OVERLAY_PATH="${PROJECT_ROOT}/k8s/overlays/local"
 
 if [[ -z "${KUBECONFIG:-}" ]] && [[ -f "${HOME}/.kube/config" ]]; then
   export KUBECONFIG="${HOME}/.kube/config"
@@ -33,15 +32,16 @@ if [[ -z "${INGRESS_HOST}" ]]; then
   fi
 fi
 
-TEMP_OVERLAY="$(mktemp -d)"
-trap 'rm -rf "${TEMP_OVERLAY}"' EXIT
+# Copia toda a arvore k8s/ para preservar o caminho relativo ../../base do Kustomize.
+TEMP_K8S="$(mktemp -d)"
+trap 'rm -rf "${TEMP_K8S}"' EXIT
 
-cp -R "${OVERLAY_PATH}/." "${TEMP_OVERLAY}/"
-sed -i.bak "s/host: wordpress.local/host: ${INGRESS_HOST}/" "${TEMP_OVERLAY}/ingress-patch.yaml"
-rm -f "${TEMP_OVERLAY}/ingress-patch.yaml.bak"
+cp -R "${PROJECT_ROOT}/k8s/." "${TEMP_K8S}/"
+sed -i.bak "s/host: wordpress.local/host: ${INGRESS_HOST}/" "${TEMP_K8S}/overlays/local/ingress-patch.yaml"
+rm -f "${TEMP_K8S}/overlays/local/ingress-patch.yaml.bak"
 
 echo "==> Aplicando manifests com Kustomize..."
-kubectl apply -k "${TEMP_OVERLAY}"
+kubectl apply -k "${TEMP_K8S}/overlays/local"
 
 echo "==> Aguardando MySQL..."
 kubectl -n wordpress rollout status deployment/mysql --timeout=300s
